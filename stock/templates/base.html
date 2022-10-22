@@ -14,7 +14,7 @@
           <div class="row row-cols-1">
             <div class="col">
               {% if user.is_authenticated %}
-              <span>Добро пожаловать, {{ user.username }}</span> | <a href="{% url 'stock:account' %}">Личный кабинет</a> | <a href="{% url 'logout' %}">Выход</a>
+                <span>Добро пожаловать, {{ user.username }}</span> | <a href="{% url 'stock:account' %}">Личный кабинет</a> | <a href="{% url 'logout' %}">Выход</a>
               {% else %}
                 <a href="{% url 'login' %}">Вход</a>
               {% endif %}
@@ -35,3 +35,4 @@
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
   </body>
 </html>
+

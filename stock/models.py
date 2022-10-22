@@ -1,6 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
 import random
-from django.contrib.auth.models import User
 
 # Create your models here.
 class Stock(models.Model):
@@ -10,13 +10,11 @@ class Stock(models.Model):
     currency = models.ForeignKey('Currency', null=True, on_delete=models.SET_NULL)
     logo = models.ImageField(null=True, blank=True)
 
-    def get_random_price(self):
-        return random.randint(0, 3000)
-
     def __str__(self):
         return f"{self.ticker}"
 
-
+    def get_random_price(self):
+        return random.randint(0, 3000)
 
 class Currency(models.Model):
     name = models.CharField(max_length=40)
@@ -28,7 +26,7 @@ class Currency(models.Model):
 
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return self.user.username
 
@@ -54,3 +52,9 @@ class AccountStock(models.Model):
 
     def __str__(self):
         return f'{self.account.user.username} {self.stock.ticker}'
+
+
+
+
+
+
