@@ -118,9 +118,6 @@ def stock_sell(request, pk):
 
         acc_stock, created = AccountStock.objects.get_or_create(account=request.user.account, stock=stock,
                                                                 defaults={'average_buy_cost': 0, 'amount': 0})
-        #current_cost = acc_stock.average_buy_cost * acc_stock.amount
-
-        #total_cost = current_cost - buy_cost
         total_amount = acc_stock.amount - amount
 
 
@@ -128,14 +125,17 @@ def stock_sell(request, pk):
         acc_currency, created = AccountCurrency.objects.get_or_create(account=request.user.account, currency=stock.currency,
                                                                       defaults={'amount': 0})
 
-        if acc_stock.amount < amount:
-            form.add_error(None, f'У вас недостаточно акций ')
+        if amount > 0:
+            if acc_stock.amount < amount:
+                form.add_error(None, f'У вас недостаточно акций ')
+            else:
+                acc_stock.amount = total_amount
+                acc_currency.amount = acc_currency.amount + buy_cost
+                acc_stock.save()
+                acc_currency.save()
+                return redirect('stock:list')
         else:
-            acc_stock.amount = total_amount
-            acc_currency.amount = acc_currency.amount + buy_cost
-            acc_stock.save()
-            acc_currency.save()
-            return redirect('stock:list')
+            form.add_error(None, f'Количество акций указано некорректно ')
 
 
     context = {
